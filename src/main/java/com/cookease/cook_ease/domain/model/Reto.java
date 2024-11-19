@@ -19,6 +19,9 @@ public class Reto {
     @Column(length = 255, nullable = false)
     private String descripcion;
 
+    @Column(length = 255)
+    private String imgUrl; // Nueva campo para la URL de la imagen
+
     @ManyToOne
     @JoinColumn(name = "idMedalla", nullable = false)
     private Medalla medalla;

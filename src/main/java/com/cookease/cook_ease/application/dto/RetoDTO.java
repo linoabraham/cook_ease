@@ -9,5 +9,6 @@ import lombok.*;
 public class RetoDTO {
     private Integer idReto;
     private String descripcion;
+    private String imgUrl;
     private Integer idMedalla;
 }

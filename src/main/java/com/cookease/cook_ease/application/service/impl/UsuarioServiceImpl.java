@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional // Asegura que todos los métodos sean transaccionales
+@Transactional
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
@@ -51,8 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDTO obtenerUsuarioPorId(Integer idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + idUsuario));
-        UsuarioDTO dto = mapearEntidadADto(usuario);
-        return dto;
+        return mapearEntidadADto(usuario);
     }
 
     @Override
@@ -86,11 +85,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioDTO asignarEtiqueta(Integer idUsuario, Integer idEtiqueta) {
+    public UsuarioDTO asignarEtiqueta(Integer idUsuario, String nombreEtiqueta) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + idUsuario));
-        Etiqueta etiqueta = etiquetaRepository.findById(idEtiqueta)
-                .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con id: " + idEtiqueta));
+        Etiqueta etiqueta = etiquetaRepository.findById(nombreEtiqueta)
+                .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con nombre: " + nombreEtiqueta));
 
         usuario.getEtiquetas().add(etiqueta);
         usuario = usuarioRepository.save(usuario);
@@ -98,11 +97,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioDTO removerEtiqueta(Integer idUsuario, Integer idEtiqueta) {
+    public UsuarioDTO removerEtiqueta(Integer idUsuario, String nombreEtiqueta) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + idUsuario));
-        Etiqueta etiqueta = etiquetaRepository.findById(idEtiqueta)
-                .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con id: " + idEtiqueta));
+        Etiqueta etiqueta = etiquetaRepository.findById(nombreEtiqueta)
+                .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con nombre: " + nombreEtiqueta));
 
         usuario.getEtiquetas().remove(etiqueta);
         usuario = usuarioRepository.save(usuario);
@@ -110,13 +109,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<RetoDTO> obtenerRetosPorUsuario(Integer idUsuario, Integer idEtiqueta, String nivelMedalla) {
+    public List<RetoDTO> obtenerRetosPorUsuario(Integer idUsuario, String nombreEtiqueta, String nivelMedalla) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + idUsuario));
 
         // Verificar que el usuario tiene la etiqueta
         Etiqueta etiqueta = usuario.getEtiquetas().stream()
-                .filter(e -> e.getIdEtiqueta().equals(idEtiqueta))
+                .filter(e -> e.getNombre().equalsIgnoreCase(nombreEtiqueta))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Etiqueta no asignada al usuario"));
 
@@ -138,48 +137,50 @@ public class UsuarioServiceImpl implements UsuarioService {
     // Métodos de mapeo
 
     private void mapearDtoAEntidad(UsuarioDTO dto, Usuario entidad) {
-        entidad.setFirstName(dto.getFirstName());
-        entidad.setLastName(dto.getLastName());
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
         entidad.setGender(dto.getGender());
-        entidad.setBirthDate(dto.getBirthDate());
-        entidad.setEmail(dto.getEmail());
+        entidad.setAge(dto.getAge());
         entidad.setHeight(dto.getHeight());
         entidad.setWeight(dto.getWeight());
-        entidad.setActivityLevel(dto.getActivityLevel());
-        entidad.setFitnessGoals(dto.getFitnessGoals());
-        entidad.setAllergies(dto.getAllergies());
-        entidad.setSleepHours(dto.getSleepHours());
-        entidad.setFixedMealSchedule(dto.getFixedMealSchedule());
-        entidad.setMealPreparationTime(dto.getMealPreparationTime());
-        entidad.setOutOfHomeMealsFrequency(dto.getOutOfHomeMealsFrequency());
-        entidad.setAccessToHealthyStores(dto.getAccessToHealthyStores());
-        entidad.setPreferredProtein(dto.getPreferredProtein());
-        entidad.setFruitConsumptionFrequency(dto.getFruitConsumptionFrequency());
+        entidad.setFamily_history_with_overweight(dto.getFamily_history_with_overweight());
+        entidad.setFAVC(dto.getFAVC());
+        entidad.setFCVC(dto.getFCVC());
+        entidad.setNCP(dto.getNCP());
+        entidad.setCAEC(dto.getCAEC());
+        entidad.setSMOKE(dto.getSMOKE());
+        entidad.setCH2O(dto.getCH2O());
+        entidad.setSCC(dto.getSCC());
+        entidad.setFAF(dto.getFAF());
+        entidad.setTUE(dto.getTUE());
+        entidad.setCALC(dto.getCALC());
+        entidad.setMTRANS(dto.getMTRANS());
     }
 
     private UsuarioDTO mapearEntidadADto(Usuario usuario) {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setIdUsuario(usuario.getIdUsuario());
-        dto.setFirstName(usuario.getFirstName());
-        dto.setLastName(usuario.getLastName());
+        dto.setNombre(usuario.getNombre());
+        dto.setApellido(usuario.getApellido());
         dto.setGender(usuario.getGender());
-        dto.setBirthDate(usuario.getBirthDate());
-        dto.setEmail(usuario.getEmail());
+        dto.setAge(usuario.getAge());
         dto.setHeight(usuario.getHeight());
         dto.setWeight(usuario.getWeight());
-        dto.setActivityLevel(usuario.getActivityLevel());
-        dto.setFitnessGoals(usuario.getFitnessGoals());
-        dto.setAllergies(usuario.getAllergies());
-        dto.setSleepHours(usuario.getSleepHours());
-        dto.setFixedMealSchedule(usuario.getFixedMealSchedule());
-        dto.setMealPreparationTime(usuario.getMealPreparationTime());
-        dto.setOutOfHomeMealsFrequency(usuario.getOutOfHomeMealsFrequency());
-        dto.setAccessToHealthyStores(usuario.getAccessToHealthyStores());
-        dto.setPreferredProtein(usuario.getPreferredProtein());
-        dto.setFruitConsumptionFrequency(usuario.getFruitConsumptionFrequency());
+        dto.setFamily_history_with_overweight(usuario.getFamily_history_with_overweight());
+        dto.setFAVC(usuario.getFAVC());
+        dto.setFCVC(usuario.getFCVC());
+        dto.setNCP(usuario.getNCP());
+        dto.setCAEC(usuario.getCAEC());
+        dto.setSMOKE(usuario.getSMOKE());
+        dto.setCH2O(usuario.getCH2O());
+        dto.setSCC(usuario.getSCC());
+        dto.setFAF(usuario.getFAF());
+        dto.setTUE(usuario.getTUE());
+        dto.setCALC(usuario.getCALC());
+        dto.setMTRANS(usuario.getMTRANS());
         if (usuario.getEtiquetas() != null) {
             dto.setEtiquetas(usuario.getEtiquetas().stream()
-                    .map(Etiqueta::getIdEtiqueta)
+                    .map(Etiqueta::getNombre)
                     .collect(Collectors.toSet()));
         }
         return dto;
@@ -189,6 +190,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         RetoDTO dto = new RetoDTO();
         dto.setIdReto(reto.getIdReto());
         dto.setDescripcion(reto.getDescripcion());
+        dto.setImgUrl(reto.getImgUrl());
         dto.setIdMedalla(reto.getMedalla().getIdMedalla());
         return dto;
     }

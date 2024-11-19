@@ -1,6 +1,7 @@
 package com.cookease.cook_ease.infraestructure.controller;
 import com.cookease.cook_ease.application.dto.RetoDTO;
 import com.cookease.cook_ease.application.service.RetoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class RetoController {
 
     // Crear Reto
     @PostMapping
-    public ResponseEntity<RetoDTO> crearReto(@RequestBody RetoDTO retoDTO) {
+    public ResponseEntity<RetoDTO> crearReto(@Valid @RequestBody RetoDTO retoDTO) {
         RetoDTO creado = retoService.crearReto(retoDTO);
         return ResponseEntity.ok(creado);
     }
@@ -38,7 +39,7 @@ public class RetoController {
     @PutMapping("/{idReto}")
     public ResponseEntity<RetoDTO> actualizarReto(
             @PathVariable Integer idReto,
-            @RequestBody RetoDTO retoDTO) {
+            @Valid @RequestBody RetoDTO retoDTO) {
         RetoDTO actualizado = retoService.actualizarReto(idReto, retoDTO);
         return ResponseEntity.ok(actualizado);
     }

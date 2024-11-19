@@ -14,12 +14,9 @@ import java.util.Set;
 public class Etiqueta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
     @EqualsAndHashCode.Include
-    private Integer idEtiqueta;
-
-    @Column(length = 100, nullable = false)
-    private String nombre;
+    private String nombre; // Usamos el nombre como identificador principal
 
     @OneToMany(mappedBy = "etiqueta", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Medalla> medallas = new HashSet<>();

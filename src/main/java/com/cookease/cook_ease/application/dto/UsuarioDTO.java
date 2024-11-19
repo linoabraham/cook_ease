@@ -14,62 +14,61 @@ public class UsuarioDTO {
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
-    private String firstName;
+    private String nombre;
 
     @NotBlank(message = "El apellido es obligatorio")
     @Size(max = 100, message = "El apellido no puede exceder 100 caracteres")
-    private String lastName;
+    private String apellido;
 
     @NotBlank(message = "El género es obligatorio")
-    @Size(max = 100, message = "El género no puede exceder 100 caracteres")
-    private String gender;
+    @Size(max = 20, message = "El género no puede exceder 20 caracteres")
+    private String gender; // "Male", "Female", etc.
 
-    @NotBlank(message = "La fecha de nacimiento es obligatoria")
-    @Size(max = 100, message = "La fecha de nacimiento no puede exceder 100 caracteres")
-    private String birthDate;
+    @NotNull(message = "La edad es obligatoria")
+    @Min(value = 0, message = "La edad no puede ser negativa")
+    private Integer age;
 
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "El email debe ser válido")
-    @Size(max = 100, message = "El email no puede exceder 100 caracteres")
-    private String email;
-
+    @NotNull(message = "La altura es obligatoria")
     @DecimalMin(value = "0.00", inclusive = false, message = "La altura debe ser positiva")
-    @Digits(integer = 3, fraction = 2, message = "La altura debe tener hasta 3 dígitos enteros y 2 decimales")
-    private BigDecimal height;
+    @Digits(integer = 4, fraction = 2, message = "La altura debe tener hasta 4 dígitos enteros y 2 decimales")
+    private BigDecimal height; // En metros, ej. 1.10
 
-    @DecimalMin(value = "0.00", inclusive = false, message = "El peso debe ser positivo")
-    @Digits(integer = 3, fraction = 2, message = "El peso debe tener hasta 3 dígitos enteros y 2 decimales")
-    private BigDecimal weight;
+    @NotNull(message = "El peso es obligatorio")
+    @Min(value = 0, message = "El peso no puede ser negativo")
+    private Integer weight; // En kilogramos
 
-    @NotBlank(message = "El nivel de actividad es obligatorio")
-    @Size(max = 80, message = "El nivel de actividad no puede exceder 80 caracteres")
-    private String activityLevel;
+    @Size(max = 10, message = "La historia familiar no puede exceder 10 caracteres")
+    private String family_history_with_overweight; // "yes", "no"
 
-    private String fitnessGoals;
+    @Size(max = 10, message = "FAVC no puede exceder 10 caracteres")
+    private String FAVC; // "yes", "no"
 
-    private String allergies;
+    private Integer FCVC;
 
-    @DecimalMin(value = "0.0", inclusive = true, message = "Las horas de sueño deben ser positivas")
-    @Digits(integer = 1, fraction = 1, message = "Las horas de sueño deben tener hasta 1 dígito entero y 1 decimal")
-    private BigDecimal sleepHours;
+    private Integer NCP;
 
-    private Boolean fixedMealSchedule;
+    @Size(max = 20, message = "CAEC no puede exceder 20 caracteres")
+    private String CAEC; // "Sometimes", etc.
 
-    @DecimalMin(value = "0.0", inclusive = true, message = "El tiempo de preparación de comidas debe ser positivo")
-    @Digits(integer = 1, fraction = 1, message = "El tiempo de preparación de comidas debe tener hasta 1 dígito entero y 1 decimal")
-    private BigDecimal mealPreparationTime;
+    @Size(max = 10, message = "SMOKE no puede exceder 10 caracteres")
+    private String SMOKE; // "yes", "no"
 
-    @Min(value = 0, message = "La frecuencia de comidas fuera de casa no puede ser negativa")
-    private Integer outOfHomeMealsFrequency;
+    @DecimalMin(value = "0.0", inclusive = true, message = "CH2O debe ser positivo")
+    @Digits(integer = 3, fraction = 1, message = "CH2O debe tener hasta 3 dígitos enteros y 1 decimal")
+    private BigDecimal CH2O;
 
-    @Size(max = 50, message = "El acceso a tiendas saludables no puede exceder 50 caracteres")
-    private String accessToHealthyStores;
+    @Size(max = 10, message = "SCC no puede exceder 10 caracteres")
+    private String SCC; // "yes", "no"
 
-    @Size(max = 100, message = "La proteína preferida no puede exceder 100 caracteres")
-    private String preferredProtein;
+    private Integer FAF;
 
-    @Size(max = 50, message = "La frecuencia de consumo de frutas no puede exceder 50 caracteres")
-    private String fruitConsumptionFrequency;
+    private Integer TUE;
 
-    private Set<Integer> etiquetas; // IDs de Etiquetas asignadas
+    @Size(max = 10, message = "CALC no puede exceder 10 caracteres")
+    private String CALC; // "yes", "no"
+
+    @Size(max = 20, message = "MTRANS no puede exceder 20 caracteres")
+    private String MTRANS; // "Walking", etc.
+
+    private Set<String> etiquetas; // Nombres de Etiquetas asignadas (Opcional)
 }

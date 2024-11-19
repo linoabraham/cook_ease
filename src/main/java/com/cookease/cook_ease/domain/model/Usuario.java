@@ -19,58 +19,61 @@ public class Usuario {
     @EqualsAndHashCode.Include
     private Integer idUsuario;
 
-    @Column(length = 100)
-    private String firstName;
+    @Column(length = 100, nullable = false)
+    private String nombre;
 
-    @Column(length = 100)
-    private String lastName;
+    @Column(length = 100, nullable = false)
+    private String apellido;
 
-    @Column(length = 100)
-    private String gender;
+    @Column(length = 20, nullable = false)
+    private String gender; // "Male", "Female", etc.
 
-    @Column(length = 100)
-    private String birthDate;
+    @Column(nullable = false)
+    private Integer age;
 
-    @Column(length = 100, unique = true)
-    private String email;
+    @Column(precision = 4, scale = 2, nullable = false)
+    private BigDecimal height; // En metros, ej. 1.10
 
-    @Column(precision = 5, scale = 2)
-    private BigDecimal height;
+    @Column(nullable = false)
+    private Integer weight; // En kilogramos
 
-    @Column(precision = 5, scale = 2)
-    private BigDecimal weight;
+    @Column(length = 10)
+    private String family_history_with_overweight; // "yes", "no"
 
-    @Column(length = 80)
-    private String activityLevel;
+    @Column(length = 10)
+    private String FAVC; // "yes", "no"
 
-    private String fitnessGoals;
+    private Integer FCVC;
 
-    private String allergies;
+    private Integer NCP;
+
+    @Column(length = 20)
+    private String CAEC; // "Sometimes", etc.
+
+    @Column(length = 10)
+    private String SMOKE; // "yes", "no"
 
     @Column(precision = 3, scale = 1)
-    private BigDecimal sleepHours;
+    private BigDecimal CH2O;
 
-    private Boolean fixedMealSchedule;
+    @Column(length = 10)
+    private String SCC; // "yes", "no"
 
-    @Column(precision = 3, scale = 1)
-    private BigDecimal mealPreparationTime;
+    private Integer FAF;
 
-    private Integer outOfHomeMealsFrequency;
+    private Integer TUE;
 
-    @Column(length = 50)
-    private String accessToHealthyStores;
+    @Column(length = 10)
+    private String CALC; // "yes", "no"
 
-    @Column(length = 100)
-    private String preferredProtein;
-
-    @Column(length = 50)
-    private String fruitConsumptionFrequency;
+    @Column(length = 20)
+    private String MTRANS; // "Walking", etc.
 
     @ManyToMany
     @JoinTable(
             name = "usuario_etiqueta",
             joinColumns = @JoinColumn(name = "idUsuario"),
-            inverseJoinColumns = @JoinColumn(name = "idEtiqueta")
+            inverseJoinColumns = @JoinColumn(name = "nombre") // Usamos nombre en vez de id
     )
     private Set<Etiqueta> etiquetas = new HashSet<>();
 }

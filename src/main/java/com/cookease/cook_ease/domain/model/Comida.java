@@ -19,7 +19,7 @@ public class Comida {
     private Integer idComida;
 
     @Column(length = 100, nullable = false)
-    private String nombre;
+    private String number;
 
     @Column(length = 1000, nullable = false)
     private String receta;

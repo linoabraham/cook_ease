@@ -1,6 +1,7 @@
 package com.cookease.cook_ease.infraestructure.controller;
 import com.cookease.cook_ease.application.dto.MedallaDTO;
 import com.cookease.cook_ease.application.service.MedallaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class MedallaController {
 
     // Crear Medalla
     @PostMapping
-    public ResponseEntity<MedallaDTO> crearMedalla(@RequestBody MedallaDTO medallaDTO) {
+    public ResponseEntity<MedallaDTO> crearMedalla(@Valid @RequestBody MedallaDTO medallaDTO) {
         MedallaDTO creada = medallaService.crearMedalla(medallaDTO);
         return ResponseEntity.ok(creada);
     }
@@ -38,7 +39,7 @@ public class MedallaController {
     @PutMapping("/{idMedalla}")
     public ResponseEntity<MedallaDTO> actualizarMedalla(
             @PathVariable Integer idMedalla,
-            @RequestBody MedallaDTO medallaDTO) {
+            @Valid @RequestBody MedallaDTO medallaDTO) {
         MedallaDTO actualizado = medallaService.actualizarMedalla(idMedalla, medallaDTO);
         return ResponseEntity.ok(actualizado);
     }

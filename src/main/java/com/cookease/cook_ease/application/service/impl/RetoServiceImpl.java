@@ -6,6 +6,7 @@ import com.cookease.cook_ease.domain.model.Medalla;
 import com.cookease.cook_ease.domain.model.Reto;
 import com.cookease.cook_ease.domain.repository.MedallaRepository;
 import com.cookease.cook_ease.domain.repository.RetoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class RetoServiceImpl implements RetoService {
 
     @Autowired
@@ -26,6 +28,7 @@ public class RetoServiceImpl implements RetoService {
     public RetoDTO crearReto(RetoDTO retoDTO) {
         Reto reto = new Reto();
         reto.setDescripcion(retoDTO.getDescripcion());
+        reto.setImgUrl(retoDTO.getImgUrl());
 
         Medalla medalla = medallaRepository.findById(retoDTO.getIdMedalla())
                 .orElseThrow(() -> new NoSuchElementException("Medalla no encontrada con id: " + retoDTO.getIdMedalla()));
@@ -33,7 +36,7 @@ public class RetoServiceImpl implements RetoService {
         reto.setMedalla(medalla);
         reto = retoRepository.save(reto);
         retoDTO.setIdReto(reto.getIdReto());
-        return retoDTO;
+        return mapearEntidadADto(reto);
     }
 
     @Override
@@ -55,6 +58,7 @@ public class RetoServiceImpl implements RetoService {
                 .orElseThrow(() -> new NoSuchElementException("Reto no encontrado con id: " + idReto));
 
         reto.setDescripcion(retoDTO.getDescripcion());
+        reto.setImgUrl(retoDTO.getImgUrl());
 
         if (retoDTO.getIdMedalla() != null) {
             Medalla medalla = medallaRepository.findById(retoDTO.getIdMedalla())
@@ -79,6 +83,7 @@ public class RetoServiceImpl implements RetoService {
         RetoDTO dto = new RetoDTO();
         dto.setIdReto(reto.getIdReto());
         dto.setDescripcion(reto.getDescripcion());
+        dto.setImgUrl(reto.getImgUrl());
         dto.setIdMedalla(reto.getMedalla().getIdMedalla());
         return dto;
     }

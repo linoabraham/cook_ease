@@ -36,7 +36,7 @@ public class ComidaServiceImpl implements ComidaService {
     @Override
     public ComidaDTO crearComida(ComidaDTO comidaDTO) {
         Comida comida = new Comida();
-        comida.setNombre(comidaDTO.getNombre());
+        comida.setNumber(comidaDTO.getNombre());
         comida.setReceta(comidaDTO.getReceta());
         comida.setInstrucciones(comidaDTO.getInstrucciones());
         comida.setDescripcionNutritional(comidaDTO.getDescripcionNutritional());
@@ -106,7 +106,7 @@ public class ComidaServiceImpl implements ComidaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comida no encontrada con id: " + idComida));
 
         // Actualizar campos básicos
-        comida.setNombre(comidaDTO.getNombre());
+        comida.setNumber(comidaDTO.getNombre());
         comida.setReceta(comidaDTO.getReceta());
         comida.setInstrucciones(comidaDTO.getInstrucciones());
         comida.setDescripcionNutritional(comidaDTO.getDescripcionNutritional());
@@ -221,7 +221,7 @@ public class ComidaServiceImpl implements ComidaService {
     private ComidaDTO mapearEntidadADto(Comida comida) {
         ComidaDTO dto = new ComidaDTO();
         dto.setIdComida(comida.getIdComida());
-        dto.setNombre(comida.getNombre());
+        dto.setNombre(comida.getNumber());
         dto.setReceta(comida.getReceta());
         dto.setInstrucciones(comida.getInstrucciones());
         dto.setDescripcionNutritional(comida.getDescripcionNutritional());

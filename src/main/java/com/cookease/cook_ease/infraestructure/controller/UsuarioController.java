@@ -3,6 +3,7 @@ package com.cookease.cook_ease.infraestructure.controller;
 import com.cookease.cook_ease.application.dto.RetoDTO;
 import com.cookease.cook_ease.application.dto.UsuarioDTO;
 import com.cookease.cook_ease.application.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UsuarioController {
 
     // Crear Usuario
     @PostMapping
-    public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<UsuarioDTO> crearUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         UsuarioDTO creado = usuarioService.crearUsuario(usuarioDTO);
         return ResponseEntity.ok(creado);
     }
@@ -40,7 +41,7 @@ public class UsuarioController {
     @PutMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> actualizarUsuario(
             @PathVariable Integer idUsuario,
-            @RequestBody UsuarioDTO usuarioDTO) {
+            @Valid @RequestBody UsuarioDTO usuarioDTO) {
         UsuarioDTO actualizado = usuarioService.actualizarUsuario(idUsuario, usuarioDTO);
         return ResponseEntity.ok(actualizado);
     }
@@ -53,20 +54,20 @@ public class UsuarioController {
     }
 
     // Asignar Etiqueta a Usuario
-    @PostMapping("/{idUsuario}/etiquetas/{idEtiqueta}")
+    @PostMapping("/{idUsuario}/etiquetas/{nombreEtiqueta}")
     public ResponseEntity<UsuarioDTO> asignarEtiqueta(
             @PathVariable Integer idUsuario,
-            @PathVariable Integer idEtiqueta) {
-        UsuarioDTO usuario = usuarioService.asignarEtiqueta(idUsuario, idEtiqueta);
+            @PathVariable String nombreEtiqueta) {
+        UsuarioDTO usuario = usuarioService.asignarEtiqueta(idUsuario, nombreEtiqueta);
         return ResponseEntity.ok(usuario);
     }
 
     // Remover Etiqueta de Usuario
-    @DeleteMapping("/{idUsuario}/etiquetas/{idEtiqueta}")
+    @DeleteMapping("/{idUsuario}/etiquetas/{nombreEtiqueta}")
     public ResponseEntity<UsuarioDTO> removerEtiqueta(
             @PathVariable Integer idUsuario,
-            @PathVariable Integer idEtiqueta) {
-        UsuarioDTO usuario = usuarioService.removerEtiqueta(idUsuario, idEtiqueta);
+            @PathVariable String nombreEtiqueta) {
+        UsuarioDTO usuario = usuarioService.removerEtiqueta(idUsuario, nombreEtiqueta);
         return ResponseEntity.ok(usuario);
     }
 
@@ -74,9 +75,9 @@ public class UsuarioController {
     @GetMapping("/{idUsuario}/retos")
     public ResponseEntity<List<RetoDTO>> obtenerRetosPorUsuario(
             @PathVariable Integer idUsuario,
-            @RequestParam Integer idEtiqueta,
+            @RequestParam String nombreEtiqueta,
             @RequestParam String nivelMedalla) {
-        List<RetoDTO> retos = usuarioService.obtenerRetosPorUsuario(idUsuario, idEtiqueta, nivelMedalla);
+        List<RetoDTO> retos = usuarioService.obtenerRetosPorUsuario(idUsuario, nombreEtiqueta, nivelMedalla);
         return ResponseEntity.ok(retos);
     }
 }

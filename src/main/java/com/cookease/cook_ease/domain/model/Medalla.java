@@ -19,13 +19,16 @@ public class Medalla {
     private Integer idMedalla;
 
     @Column(length = 100, nullable = false)
-    private String nombre;
+    private String nombremedalla;
 
     @Column(length = 50, nullable = false)
     private String nivel;
 
+    @Column(length = 255)
+    private String imgUrl; // Nueva campo para la URL de la imagen
+
     @ManyToOne
-    @JoinColumn(name = "idEtiqueta", nullable = false)
+    @JoinColumn(name = "nombre", nullable = false) // Usamos nombre de Etiqueta
     private Etiqueta etiqueta;
 
     @OneToMany(mappedBy = "medalla", cascade = CascadeType.ALL, orphanRemoval = true)

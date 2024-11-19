@@ -7,6 +7,7 @@ import com.cookease.cook_ease.domain.model.Medalla;
 
 import com.cookease.cook_ease.domain.repository.EtiquetaRepository;
 import com.cookease.cook_ease.domain.repository.MedallaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class MedallaServiceImpl implements MedallaService {
 
     @Autowired
@@ -26,16 +28,17 @@ public class MedallaServiceImpl implements MedallaService {
     @Override
     public MedallaDTO crearMedalla(MedallaDTO medallaDTO) {
         Medalla medalla = new Medalla();
-        medalla.setNombre(medallaDTO.getNombre());
+        medalla.setNombremedalla(medallaDTO.getNombre());
         medalla.setNivel(medallaDTO.getNivel());
+        medalla.setImgUrl(medallaDTO.getImgUrl());
 
-        Etiqueta etiqueta = etiquetaRepository.findById(medallaDTO.getIdEtiqueta())
-                .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con id: " + medallaDTO.getIdEtiqueta()));
+        Etiqueta etiqueta = etiquetaRepository.findById(medallaDTO.getNombreEtiqueta())
+                .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con nombre: " + medallaDTO.getNombreEtiqueta()));
 
         medalla.setEtiqueta(etiqueta);
         medalla = medallaRepository.save(medalla);
         medallaDTO.setIdMedalla(medalla.getIdMedalla());
-        return medallaDTO;
+        return mapearEntidadADto(medalla);
     }
 
     @Override
@@ -56,12 +59,13 @@ public class MedallaServiceImpl implements MedallaService {
         Medalla medalla = medallaRepository.findById(idMedalla)
                 .orElseThrow(() -> new NoSuchElementException("Medalla no encontrada con id: " + idMedalla));
 
-        medalla.setNombre(medallaDTO.getNombre());
+        medalla.setNombremedalla(medallaDTO.getNombre());
         medalla.setNivel(medallaDTO.getNivel());
+        medalla.setImgUrl(medallaDTO.getImgUrl());
 
-        if (medallaDTO.getIdEtiqueta() != null) {
-            Etiqueta etiqueta = etiquetaRepository.findById(medallaDTO.getIdEtiqueta())
-                    .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con id: " + medallaDTO.getIdEtiqueta()));
+        if (medallaDTO.getNombreEtiqueta() != null) {
+            Etiqueta etiqueta = etiquetaRepository.findById(medallaDTO.getNombreEtiqueta())
+                    .orElseThrow(() -> new NoSuchElementException("Etiqueta no encontrada con nombre: " + medallaDTO.getNombreEtiqueta()));
             medalla.setEtiqueta(etiqueta);
         }
 
@@ -81,9 +85,10 @@ public class MedallaServiceImpl implements MedallaService {
     private MedallaDTO mapearEntidadADto(Medalla medalla) {
         MedallaDTO dto = new MedallaDTO();
         dto.setIdMedalla(medalla.getIdMedalla());
-        dto.setNombre(medalla.getNombre());
+        dto.setNombre(medalla.getNombremedalla());
         dto.setNivel(medalla.getNivel());
-        dto.setIdEtiqueta(medalla.getEtiqueta().getIdEtiqueta());
+        dto.setImgUrl(medalla.getImgUrl());
+        dto.setNombreEtiqueta(medalla.getEtiqueta().getNombre());
         return dto;
     }
 }
